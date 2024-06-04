@@ -1,0 +1,13 @@
+//guardian
+const user = localStorage.getItem("userOnline")
+if(user == null){
+    window.location.href = "/";
+
+    // local storage es el guardian
+}
+const btnLogout = document.getElementById("btn-logout");
+
+btnLogout.addEventListener("click", function () {
+    localStorage.removeItem("userOnline")
+    window.location.href = "/";
+})

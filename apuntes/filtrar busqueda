@@ -1,0 +1,33 @@
+//funcion para busqueda por barra de busqueda
+async function buscarFiltros() {
+    const busqueda = document.getElementById('busqueda').value;
+
+        const respuesta = await fetch(`http://localhost:3000/trabajos`);
+
+        const trabajos = await respuesta.json();
+
+        // diltrar los trabajos en el cliente 
+        const trabajosFiltrados = trabajos.filter(trabajo => trabajo.titulo.includes(busqueda));
+
+        //limpiar la interfaz
+        app.innerHTML = ''
+
+        //imprimir los trabajos diltrados
+        trabajosFiltrados.forEach(element => {
+            const trabajoHTML = `
+            <div data-id="${element.id}">
+                <div class = "jop-txt">
+                    <h2>${element.titulo}</h2>
+                    <p>${element.descripcion}</p>
+                </div>
+                <div class ="btns">
+                    <button class="delete">Eliminar</button>
+                    <button class="actualizar">Actualizar</button>
+                </div>
+            </div>
+            `;
+
+            // lo que hacemos es meter en una posicion especifica con insetAdjacentHTML.  
+            // bedoreedn es la poscicion donde lo vamos a meter 
+            app.insertAdjacentHTML('beforeend',trabajoHTML ); 
+        });

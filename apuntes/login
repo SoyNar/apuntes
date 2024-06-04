@@ -1,0 +1,40 @@
+const formulario = document.getElementById("form-login");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+
+
+// preguntar si el email existe o no en la base de datos guardada para poder dejar entrar al usuario
+// si esta devuelve true y si no devuelve false
+
+// en esta nos traemos la base de datos para 
+
+async function validarCorreoExista(email){
+    const response =  await fetch(`http://localhost:3000/users?email=${email.value}`)
+    const data = await response.json();
+ 
+    // si existe lo traemos con todos los datos
+    // solo deberia haber un objeto con ese email
+  if (data.length > 0){
+    return data[0]
+  }else{
+    return false;
+  }
+ }
+
+ // ponemos escuchador de evento al formulario
+
+ formulario.addEventListener("submit", async (e)=>{
+    e.preventDefault() //evitamos que se recarga
+     const user = await validarCorreoExista(email)
+     if(user === false){ // si el usuario devuelto no esta registrado
+        alert("no registrado");
+     }else{
+        if(user.password === password.value){
+            localStorage.setItem("userOnline",JSON.stringify(user))// antes lo pasamos a json lo guardamos a local storage antes de oasar a  la sesion princiapl
+             window.location.href = "/src/pages/dashboard.html"
+        }else{
+            alert("Contraseña incorrecta");
+        }
+     }
+
+ })
